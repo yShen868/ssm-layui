@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace是用于方法调用的映射,而不是实体类和表的映射,配置文件中设置的别名,和这个User没有关系 -->
+<!-- 调用下面的标签 需要使用 namespace.id 来执行 -->
+<mapper namespace="Role">
+    <!--
+		id : 相当于方法名
+		parameterType : 表示传入的参数类型,需要写类全名,可以使用别名
+		resultType : 表示执行完之后的结果集类型
+	 -->
+    <!-- 这里的User 应该写全名,但是由于我们设置了别名,所以写User也是可以的 -->
+   <select id="selectAll" parameterType="map"  resultType="Role">
+       select * from role
+   </select>
+   <select id="count" parameterType="map" resultType="int">
+       select count(*) from role
+   </select>
+   <select id="find" parameterType="int" resultType="int">
+       select sup_id from role_sup where role_id = #{r_id}
+   </select>
+
+   <select id="selectId" parameterType="Role" resultType="int">
+       select r_id from role where r_name = #{r_name}
+           <if test="desc!=null and desc!=''">
+               and `desc` = #{desc}
+           </if>
+   </select>
+
+
+    <insert id="insert" parameterType="Role">
+        insert into
+        role
+        (r_name, `desc`)
+        values
+        (#{r_name},#{desc})
+    </insert>
+    <update id="update" parameterType="Role">
+        update role set r_name = #{r_name},`desc` = #{desc} where r_id = #{r_id}
+    </update>
+
+    <insert id="insertrolesup" parameterType="map">
+        insert into
+        role_sup
+        (role_id, sup_id)
+        values
+        (#{role_id},#{sup_id})
+    </insert>
+
+
+
+
+    <delete id="deleterolesup" parameterType="int">
+        delete from role_sup where role_id = #{r_id}
+    </delete>
+
+
+    <delete id="delete" parameterType="int">
+        delete from role where r_id = #{r_id}
+    </delete>
+
+</mapper>

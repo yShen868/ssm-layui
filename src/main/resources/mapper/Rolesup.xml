@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace是用于方法调用的映射,而不是实体类和表的映射,配置文件中设置的别名,和这个User没有关系 -->
+<!-- 调用下面的标签 需要使用 namespace.id 来执行 -->
+<mapper namespace="Rolesup">
+    <select id="selectoneuser" parameterType="User" resultType="int">
+        SELECT rs.sup_id FROM `user` u INNER JOIN role_sup rs ON(u.role_id = rs.role_id) WHERE u.u_id =#{u_id}
+    </select>
+
+
+    <insert id="insert" parameterType="Rolesup">
+        insert into role_sup (role_id, sup_id) values (#{role_id},#{sup_id})
+    </insert>
+
+
+    <delete id="delect" parameterType="list">
+        delete from role_sup where role_id in
+        <foreach collection="list" item="l" open="(" separator="," close=")">
+            #{l}
+        </foreach>
+    </delete>
+
+
+
+
+</mapper>

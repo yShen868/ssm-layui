@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace是用于方法调用的映射,而不是实体类和表的映射,配置文件中设置的别名,和这个User没有关系 -->
+<!-- 调用下面的标签 需要使用 namespace.id 来执行 -->
+<mapper namespace="SidebarSup">
+
+    <!--parameterType="T_sidebarSub"-->
+
+    <select id="listAll" resultMap="SidebarSupMap">
+        select * from t_sidebarSup sup left join t_sidebarsub sub on sup.id = sub.pid
+    </select>
+
+    <resultMap id="SidebarSupMap" type="SidebarSup" autoMapping="true">
+        <id property="id" column="id"></id>
+        <collection property="list" ofType="SidebarSub" autoMapping="true">
+            <id property="sub_id" column="sub_id"></id>
+        </collection>
+    </resultMap>
+
+    <select id="listAllbyid" parameterType="list" resultMap="SidebarSupMap">
+        select * from t_sidebarSup sup left join t_sidebarsub sub on sup.id = sub.pid
+        where sup.id in
+        <foreach collection="list" item="item_id" open="(" separator="," close=")">
+            #{item_id}
+        </foreach>
+    </select>
+
+
+    <select id="select" resultType="SidebarSup">
+        select * from t_sidebarSup
+    </select>
+</mapper>

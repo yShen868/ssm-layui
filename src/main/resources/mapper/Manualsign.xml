@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace是用于方法调用的映射,而不是实体类和表的映射,配置文件中设置的别名,和这个User没有关系 -->
+<!-- 调用下面的标签 需要使用 namespace.id 来执行 -->
+<mapper namespace="Manualsign">
+    <insert id="insert" parameterType="Manualsign">
+       insert into manualsign (come_time, user_id, m_desc) values (#{come_time},#{user_id},#{m_desc})
+    </insert>
+
+    <select id="selectAll" resultType="Manualsign">
+        select * from manualsign
+    </select>
+
+    <!--parameterType="map"-->
+    <select id="selectAllpage" parameterType="map" resultType="Manualsign">
+        select * from manualsign
+        <where>
+            <if test="start!=null">
+                AND come_time &gt;=#{start}
+            </if>
+            <if test="end!=null">
+                AND come_time &lt;=#{end}
+            </if>
+            <if test="name!=null and name !=''">
+                and user_id like concat("%",#{name},"%")
+            </if>
+        </where>
+        limit #{page},#{limit}
+
+
+    </select>
+
+
+    <select id="count" parameterType="map" resultType="int">
+        select count(*) from manualsign
+        <where>
+            <if test="start!=null">
+                AND come_time &gt;=#{start}
+            </if>
+            <if test="end!=null">
+                AND come_time &lt;=#{end}
+            </if>
+            <if test="name!=null and name !=''">
+                and user_id like concat("%",#{name},"%")
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+    <select id="selecttoday" parameterType="map" resultType="int">
+    SELECT count(*) FROM `manualsign`
+    WHERE come_time LIKE CONCAT('%',#{come},'%') AND user_id = #{u_id}
+    </select>
+
+
+</mapper>

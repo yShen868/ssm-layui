@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace是用于方法调用的映射,而不是实体类和表的映射,配置文件中设置的别名,和这个User没有关系 -->
+<!-- 调用下面的标签 需要使用 namespace.id 来执行 -->
+<mapper namespace="User">
+
+    <insert id="insert" parameterType="User">
+        <!-- 这里的#username 等于是用 ?  然后再对?进行设置值,值就是参数对象中的username变量的值 -->
+        insert into user (u_name, password, sex, status, dept_id, role_id) values (#{u_name},#{password},#{sex},#{status},#{dept_id},#{role_id})
+    </insert>
+
+    <delete id="delete" parameterType="int" >
+        delete from user where u_id = #{u_id}
+    </delete>
+
+    <update id="update" parameterType="User">
+        update user set u_name = #{u_name},password = #{password},sex = #{sex},status = #{status},dept_id = #{dept_id},role_id =#{role_id} where u_id = #{u_id}
+    </update>
+
+    <select id="selectOne" parameterType="User" resultType="User">
+        select * from user where u_name = #{u_name} and password = #{password}
+    </select>
+
+    <select id="selectAll" resultType="User">
+        select * from user
+    </select>
+
+    <select id="count" parameterType="User" resultType="int">
+        select count(*) from user
+    </select>
+
+
+    <select id="selectbyuid" parameterType="int" resultType="int">
+        select count(*) from user where role_id = #{r_id}
+    </select>
+
+
+    <!--<select id="selectOneRole" parameterType="User" resultMap="int">-->
+    <!--</select>-->
+
+</mapper>
